@@ -1,35 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { signOut } from 'firebase/auth';
+import {
+  BrowserRouter, Route, Routes, Link,
+} from 'react-router-dom';
+import { auth } from './config/firebase';
+import SignUp from './components/SignUp';
+import './App.css';
+import { Todo } from './main-pages/Todo';
+import Blogs from './main-pages/Blogs';
+import { Read } from './main-pages/Read';
+import Login from './main-pages/Login';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [menuOpen, setMenuOpen] = useState(true);
+
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev);
+  };
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+      alert('logout success');
+    } catch (err) {
+      alert(err);
+    }
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <div className="main-container">
+          <div className={`side-menu ${menuOpen ? 'expanded' : 'collapsed'}`}>
+            <p id="left" onClick={toggleMenu} style={{ cursor: 'pointer' }}>
+              {menuOpen ? '◀' : '▶'}
+            </p>
+
+            {menuOpen && (
+              <>
+                <div className="pages out">
+                  <a onClick={logOut}>Sign Out</a>
+                </div>
+                <div className="pages">
+                  <Link to="/signup">Sign Up</Link>
+                </div>
+                <div className="pages">
+                  <Link to="/login">Log In</Link>
+                </div>
+                <div className="pages">
+                  <Link to="/">Todo</Link>
+                </div>
+                <div className="pages">
+                  <Link to="/read">Read</Link>
+                </div>
+                <div className="pages">
+                  <Link to="/blogs">Blogs</Link>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="content-container">
+            <Routes>
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<Todo />} />
+              <Route path="/read" element={<Read />} />
+              <Route path="/blogs" element={<Blogs />} />
+            </Routes>
+          </div>
+        </div>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
