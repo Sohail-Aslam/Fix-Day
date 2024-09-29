@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable */
+import React, { useEffect, useState } from "react";
 import {
   addDoc,
   getDocs,
@@ -6,16 +7,16 @@ import {
   updateDoc,
   collection,
   doc,
-} from 'firebase/firestore';
-import { db } from '../config/firebase.js';
+} from "firebase/firestore";
+import { db } from "../config/firebase";
 
 export function Todo() {
   const [todo, setTodo] = useState([]);
-  const [add, setAdd] = useState('');
+  const [add, setAdd] = useState("");
   const [complete, setComplete] = useState(false);
-  const [updateTask, setUpdateTask] = useState('');
+  const [updateTask, setUpdateTask] = useState("");
 
-  const todoTasks = collection(db, 'Tasks');
+  const todoTasks = collection(db, "Tasks");
 
   const getTodoList = async () => {
     try {
@@ -40,7 +41,7 @@ export function Todo() {
         todo: add,
         complete,
       });
-      setAdd('');
+      setAdd("");
       getTodoList();
     } catch (err) {
       alert(err);
@@ -48,20 +49,20 @@ export function Todo() {
   };
 
   const handleDelete = async (id) => {
-    const todoDoc = doc(db, 'Tasks', id);
+    const todoDoc = doc(db, "Tasks", id);
     await deleteDoc(todoDoc);
     getTodoList();
   };
 
   const handleUpdate = async (id) => {
-    const todoDoc = doc(db, 'Tasks', id);
+    const todoDoc = doc(db, "Tasks", id);
     await updateDoc(todoDoc, { todo: updateTask });
     getTodoList();
-    setUpdateTask('');
+    setUpdateTask("");
   };
 
   const handleChecked = async (id, isComplete) => {
-    const todoDoc = doc(db, 'Tasks', id);
+    const todoDoc = doc(db, "Tasks", id);
     await updateDoc(todoDoc, { complete: isComplete });
     getTodoList();
   };
@@ -69,15 +70,15 @@ export function Todo() {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '15px',
-        width: '100%',
-        minWidth: '500px',
-        height: '700px',
-        overflow: 'auto',
-        padding: '20px',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "column",
+        gap: "15px",
+        width: "100%",
+        minWidth: "500px",
+        height: "700px",
+        overflow: "auto",
+        padding: "20px",
+        alignItems: "center",
       }}
     >
       <input
@@ -98,7 +99,7 @@ export function Todo() {
             <div className="task-card" key={index}>
               <h2
                 style={{
-                  textDecoration: Tasks.complete ? 'line-through' : 'none',
+                  textDecoration: Tasks.complete ? "line-through" : "none",
                 }}
               >
                 {Tasks.todo}
@@ -137,7 +138,7 @@ export function Todo() {
 
               <input
                 type="text"
-                style={{ marginLeft: '5px' }}
+                style={{ marginLeft: "5px" }}
                 placeholder="Update Task"
                 onChange={(e) => setUpdateTask(e.target.value)}
               />

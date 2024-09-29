@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
-import {
-  getDocs, deleteDoc, collection, doc,
-} from 'firebase/firestore';
-import { db } from '../config/firebase';
+/* eslint-disable */
+import { useState, useEffect } from "react";
+import { getDocs, deleteDoc, collection, doc } from "firebase/firestore";
+import { db } from "../config/firebase";
 
-export function Read() {
+export default function Read() {
   const [blogs, setBlogs] = useState([]);
-  const BlogsArticle = collection(db, 'Articles');
+  const BlogsArticle = collection(db, "Articles");
 
   const getBlogArticle = async () => {
     const data = await getDocs(BlogsArticle);
@@ -17,7 +16,7 @@ export function Read() {
     setBlogs(filteredData);
   };
   const handleDelete = async (id) => {
-    const todoDoc = doc(db, 'Articles', id);
+    const todoDoc = doc(db, "Articles", id);
     await deleteDoc(todoDoc);
     getBlogArticle();
   };
@@ -27,15 +26,7 @@ export function Read() {
   }, []);
 
   return (
-    <div
-      style={{
-        maxWidth: '800px',
-        maxHeight: '800px',
-        display: 'flex',
-        flexWrap: 'wrap',
-        overflow: 'auto',
-      }}
-    >
+    <div style={{ overflow: "auto", height: "750px" }}>
       {blogs.map((article, index) => (
         <div className="blog-card" key={index}>
           <h2>{article.title}</h2>
